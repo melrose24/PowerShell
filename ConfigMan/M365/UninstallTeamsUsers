@@ -1,0 +1,76 @@
+## Function to Write Load
+Function Write-Log 
+{
+param 
+    (
+        [Parameter(Mandatory=$False, Position=0)] 
+        [String]$Entry 
+    )
+        "$(Get-Date -Format 'yyyy-MM-dd HH:mm: ss.fff') $Entry" | Out-File -FilePath $LogFilePath -Append
+}
+ 
+#Variable for ExitCode 
+$ExitCode = 0 
+
+#Log File Path 
+$LogFilePath = "C:\LoggingDirectory\TeamsUninstall.log" 
+
+#Removal Machine-Wide Installer - This needs to be done before removing the exe below! 
+
+Write-Log -Entry "Validating if Machine Wide installer is Present at $(Get-Date -Format 'dddd, MMMM dd, yyyy')."
+
+$TeamsWideInstaller = (Get-WmiObject -Class Win32_Product | Where-Object {$_.IdentifyingNumber -eq "{731F6BAA-A986-45A4-8936- 7C3AAAAA760B}"}).IdentifyingNumber 
+
+    If ($TeamsWideInstaller -eq "{731F6BAA-A986-45A4-8936-7C3AAAAA760B}") 
+    {
+    $Service = (Get-Process -Name teams).processname 
+        If ($service -eq 'teams') 
+    {
+        (KILL -Name Teams) 
+        Write-Log ("Killed Teams service")
+    }
+    Else 
+        {
+            Write-Log -Entry "Teams is not running"
+        }
+    }
+        ## Removing Teams
+    Write-Log -Entry "Starting Removal of Teams at $(Get-Date)."
+    Get-WmiObject -class Win32_Product | Where-Object {$_.IndentifyingNumber -eq "{731F6BAA-A986-45A4-8936-7C3AAAAA760B}"} | Remove-Object
+    Write-Log -Entry "Removed Teams at $(Get-Date)."
+    Write-Log -Entry "Sleeping for 120 seconds"
+    Start-Sleep -Seconds 120
+    
+   
+    ## Uninstalls Teams via Update.exe
+    $TeamsUsers = Get-ChildItem -Path "$($ENV:SystemDrive)\Users"
+    Write-Log -Entry "Removing Teams Update.exe from all users"
+    Try {
+            if (Test-Path "$($ENV:SystemDrive)\Users\$($_.Name)\AppData\Local\Microsoft\Teams") 
+                {
+                    Start-Process -FilePath "$($ENV:SystemDrive)\Users\$($_.Name)\Appdata\Local\Microsoft\Teams\Update.exe" -ArgumentList "-uninstall -s"
+                }
+        } 
+    Catch  
+            {
+                Out-Null
+            }
+Start-Sleep -Seconds 60
+Write-Log -Entry "sleeping for 60 seconds"
+
+# Remove AppData Folder from _.Name
+Write-Log -Entry "Remove Teams from AppData"
+$TeamsUsers | ForEach-Object { 
+    Try { 
+        if (Test-Path "$(SENV:SystemDrive)\Users\$($_.Name)\AppData\Local\Microsoft\Teams") {
+            Remove-Item -Path "$($ENV:SystemDrive)\Users\$($_.Name)\AppData\Local\Microsoft\Teams" -Recurse -Force -ErrorAction Ignore 
+                                                                                            ｝ 
+    }   
+ } Catch 
+            { 
+            Out-Nu11 
+            }
+    }
+
+    Write-Log -Entry "Teams Removce ended with ($ExitCode)."
+    

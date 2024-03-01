@@ -1,0 +1,2 @@
+### Looking for MEC for Monthly Channel
+Invoke-Command -Computername DeviceName.FQDN -Scriptblock {(Get-ItemProperty -Path HKLM:\Software\Microsoft\Office\ClickToRun\Configuration).AudienceData}

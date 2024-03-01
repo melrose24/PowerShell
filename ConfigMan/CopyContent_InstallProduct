@@ -1,0 +1,5 @@
+## Copy Folder Content to Another Device
+Copy-Item -Path 'C:\Folder\CopyContentFolder*\' -Destination \\DeviceName.FQDN\c$\copylocation -Force -Recurse
+
+## Install Product
+Invoke-Command -ComputerName DeviceName -ScriptBlock {Start-Process -FilePath 'c:\copylocation\copycontentfolder\install.exe' -wait}

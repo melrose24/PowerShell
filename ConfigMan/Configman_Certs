@@ -1,0 +1,10 @@
+## Check ConfigManCerts
+Invoke-Command -ComputerName DeviceName.fqdn -Scriptblock {Get-ChildItem -Recurse Cert:\LocalMachine\SMS | Select-Object notafter, notbefore}
+
+
+## Individually Delete Configuration Manager Certifications
+Invoke-Command -ComputerName DeviceName.fqdn -Scriptblock {Get-ChildItem -Recurse Cert:\LocalMachine\SMS | Remove-Item}
+
+## Recycle CCmexec Service to Recreate Local SMS Certs
+Get-Service -ConputerName DeviceName.fqdn -Name ccmexec | Restart-Service ./.anaconda
+

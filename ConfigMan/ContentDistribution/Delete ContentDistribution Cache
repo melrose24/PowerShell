@@ -1,0 +1,5 @@
+## Delete NomadCache Content Remotely - Default Location
+Invoke-Command -ComputerName DeviceName.FQDN -ScriptBlock {(Get-ChildItem -Path C:\ProgramData\1E\NomadBranch -Recurse | Remote-Item -Force -Recurse -Confirm:$false)}
+
+## Once you Delete, need to recycle nomad service to allow service to clean up registry
+Invoke-Command -ComputerName DeviceName.FQDN -ScriptBlock {Restart-Service -Name NomadBranch}
