@@ -1,0 +1,11 @@
+Stop-Service -Name wuauserv
+Rename-Item -Path $env:systemroot\SoftwareDistribution -NewName SoftwareDistribution.old
+Start-Service -Name wuauserv
+
+Stop-Service -Name bits
+Start-Service -Name bits
+
+## Need to do more research per each Project\Customer
+#Stop-Service -Name cryptsvc
+#Rename-Item -Path $env:systemroot\system32\catroot2 -NewName catroot2.old
+#Start-Service -Name cryptsvc
