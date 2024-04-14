@@ -3,30 +3,41 @@
   This routine is to generate a random number between 1 and "MaximumRandom(180); if the Configuration Item is run daily, approximately twice a year it is expected
   that a client will randomly pick a value of 1, and trigger a RefreshServercomplianceState
 .DESCRIPTION
-  - This script would likely be used by a Configuration Manager Administrator as a 'Configuration Item', as the
-    "Detection" script in that Configuration Item. The Administrator would set it up as a detect-only script, where
-    the "what means compliant" is that any value at all is returned.
-  - The Configuration Manager Administrator would likely add this to a baseline, and deploy that baseline to run
-    on a Daily basis to their windows-os based devices, which scan for or deploy patches using the Software Updates Feature.
-  - Using the MaximumRandom number of 180, presuming the baseline runs daily, approximately twice a year based on
-    random probabilities, a client will trigger to run the "ResetServerComplianceState". See the blow mentioned
-    below for why this is something a Configuration Manager Administrator might want to do this.
-  - If the Configuration Manager Administrator wants to make it randomly occur more frequently or less frequently,
-    they would either adjust the $MaximumRandom number higher or lower, or modify the frequency of the Baseline evaluation
-    schedule.
-  - For interactive testing, modify $VerbosePreference to 'Continue' to see what action was taken. Remember to change
-    it back to SilentlyContinue for live deployments.
-  - If a client does trigger, an EventLog entry in the ApplicationLog with an Information EventId of 555 from SyncStateScript
-    will be created. You can add or modify the -Message entry for the EventLog to be as verbose as you need it to be for
-    your own potential future tracking purposes. Perhaps you might want to add in specifics like "Configuration Item
-    Named <whatever> in the Baseline <whatever> triggered this action, this was originally deployed on <Date>"
+ Certainly! Let's rephrase the provided information about the script and its usage in a more concise manner:
 
-   Credits: Garth Jones for the idea.
+- Purpose of the Script:
+  - This script serves as a "Detection" script within a **Configuration Item**.
+  - When used in a detect-only mode, any value returned is considered compliant.
 
+- Deployment and Frequency:
+  - Configuration Manager Administrators typically add this script to a baseline.
+  - The baseline is deployed daily to Windows OS-based devices.
+  - These devices scan for or deploy patches using the Software Updates Feature.
+
+- Random Trigger and Reset:
+  - With a `MaximumRandom` number of 180, a client may trigger the "ResetServerComplianceState" approximately twice a year based on random probabilities.
+  - The purpose of this action is explained below.
+
+- Customization Options:
+  - To adjust the frequency, administrators can modify the `$MaximumRandom` number or the Baseline evaluation schedule.
+  - For interactive testing, `$VerbosePreference` can be set to 'Continue' to observe actions.
+  - Remember to revert it to 'SilentlyContinue' for live deployments.
+
+- Event Logging:
+  - If a client triggers the action, an EventLog entry with Information EventId 555 from "SyncStateScript" is created.
+  - Administrators can customize the `-Message` entry for future tracking, including details like the Configuration Item's name, baseline deployment date, and more.
+
+Source: Jason Melrose -  4/13/2024
+(1) Create configuration baselines - Configuration Manager | Microsoft Learn. https://learn.microsoft.com/en-us/mem/configmgr/compliance/deploy-use/create-configuration-baselines.
+(2) ConfigMgr Configuration Baselines – A Beginners Guide. https://msendpointmgr.com/2017/04/09/configmgr-configuration-baselines-a-beginners-guide/.
+(3) SCCM Baseline Powershell Script for File Detection in User Profile .... https://www.anoopcnair.com/sccm-baseline-powershell-script-file-detection/.
+(4) Configuration Items and Baselines, Using Scripts (Powershell ... - CTGlobal. https://blog.ctglobalservices.com/configuration-manager-sccm/heh/configuration-items-and-baselines-using-scripts-powershell-example/.
+
+Credits: Garth Jones for idea.
    https://blogs.msdn.microsoft.com/steverac/2011/01/07/sccm-state-messagingin-depth
-   for the reasons why it's a good idea to do so occasionally.
+  
 .NOTES
-  2024-04-11 Jason Melrose
+2024-04-11 Jason Melrose
 
   $VerbosePreference options are
    'Continue' (show the messages)
