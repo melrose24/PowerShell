@@ -6,5 +6,6 @@ Invoke-Command -ComputerName DeviceName.fqdn -Scriptblock {Get-ChildItem -Recurs
 Invoke-Command -ComputerName DeviceName.fqdn -Scriptblock {Get-ChildItem -Recurse Cert:\LocalMachine\SMS | Remove-Item}
 
 ## Recycle CCmexec Service to Recreate Local SMS Certs
-Get-Service -ConputerName DeviceName.fqdn -Name ccmexec | Restart-Service ./.anaconda
+Get-Service -ComputerName DeviceName.fqdn -Name ccmexec | Restart-Service
+
 
