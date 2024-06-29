@@ -5,8 +5,8 @@ foreach ($ComputerName in $Devices)
 Invoke-Command -ComputerName $ComputerName -ScriptBlock 
     {
         $Guid = Get-ChildItem HKLM:\Software\Microsoft\Enrollments |  ForEach-Object {Get-ItemProperty $_.pspath} | Where-Object {$_.DiscoveryServiceFullURL} | Foreach-Object {$_.PSChildName}
-        Write-Host $_.Name0 
-        Write-Host $Guid
+        Write-Output $_.Name0 
+        Write-Output $Guid
             If ($Guid) 
             {
                 Remove-Item -Path "HKLM:\Software\Microsoft\Enrollments\$guid" -Recurse
