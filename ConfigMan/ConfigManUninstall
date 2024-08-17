@@ -44,3 +44,19 @@ Get-CimInstance -query "Select * From __Namespace Where Name = 'SmsDm'" -Namespa
 Get-CimInstance -query "Select * From __Namespace Where Name = 'sms'" -Namespace "root\cimv2" | Remove-Ciminstance -Verbose -Confirm:$false 
 
 'C:\ccmsetup.exe /BITSPriority:High /MP:ServerName SMSMP=ServerNameL SMSSITECODE=AAA RESETKEVINFORMATION=TRUE' -Wait
+
+
+########################################################## 
+#IF VDI: Some more things to consider
+##########################################################
+
+#Remove the SMS Certificates from the certificate store using command line
+Get-ChildItem Cert:\LocalMachine\SMS | Where-Object {$_Subject -Like "CN=SMS*"} | Remove-Item
+
+# For VDI instances (Citrix, VMMare, or other hypervisor products), remove the VDI Identity Store data from WMI using the command line
+Get-CimInstance -Namespace root\CCMVDI -Class CCM_VDI_Identity_Store_Configuration -Filter "Name <> 'RDV'" | Remove-CimInstance
+
+# If you're using Citrix PVS, delete the persistent store backup file using the command line
+Remove-Item 'C:\ProgramData\Citrix\PVSAgent\LocallyPersistedData\CCMData\CCMCFG.BAK'
+
+
